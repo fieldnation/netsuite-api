@@ -1,0 +1,29 @@
+{
+  "name": "netsuite-soap",
+  "version": "1.0.0",
+  "description": "NetSuite SOAP bindings",
+  "main": "lib/netSuiteSoap.js",
+  "scripts": {
+    "test": "mocha --recursive",
+    "lint": "eslint lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/fieldnation/netsuite-soap.git"
+  },
+  "keywords": [
+    "NetSuite",
+    "SOAP"
+  ],
+  "author": "Field Nation",
+  "license": "UNLICENSED",
+  "homepage": "https://bitbucket.org/fieldnation/netsuite-soap#readme",
+  "dependencies": {
+    "soap": "^0.17.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.7.1",
+    "mocha": "^3.1.0"
+  }
+}
