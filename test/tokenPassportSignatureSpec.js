@@ -40,6 +40,7 @@ describe('TokenPassportSignature Type', () => {
     beforeEach(() => {
       key = TokenPassportSignature.createKey('abc');
       passport = new TokenPassport();
+
       sig.algorithm = 'SHA256';
     });
 
@@ -81,6 +82,16 @@ describe('TokenPassportSignature Type', () => {
       const signature = sig.createSignature(passport.baseString, key);
       const actual = signature[signature.length - 1];
       actual.should.equal('=');
+    });
+
+    it('should create a signature with SHA256', () => {
+      sig.algorithm = 'SHA256';
+      expect(sig.createSignature(passport.baseString, key)).to.exist;
+    });
+
+    it('should create a signature with SHA1', () => {
+      sig.algorithm = 'SHA1';
+      expect(sig.createSignature(passport.baseString, key)).to.exist;
     });
   });
 });

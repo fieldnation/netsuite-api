@@ -5,6 +5,8 @@
   "main": "lib/netSuiteSoap.js",
   "scripts": {
     "test": "mocha --recursive",
+    "test-ci": "mocha --recursive --reporter mocha-junit-reporter --check-leaks --bail",
+    "test-cov": "istanbul cover --report html node_modules/mocha/bin/_mocha -- --recursive --check-leaks --reporter dot",
     "lint": "eslint lib"
   },
   "repository": {
@@ -24,6 +26,8 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "eslint": "^3.7.1",
-    "mocha": "^3.1.0"
+    "istanbul": "^0.4.5",
+    "mocha": "^3.1.0",
+    "mocha-junit-reporter": "^1.12.0"
   }
 }
