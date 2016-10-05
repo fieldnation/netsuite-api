@@ -1,8 +1,8 @@
 {
-  "name": "netsuite-soap",
+  "name": "netsuite-api",
   "version": "1.0.0",
-  "description": "NetSuite SOAP bindings",
-  "main": "lib/netSuiteSoap.js",
+  "description": "NetSuite API",
+  "main": "lib/netsuite.js",
   "scripts": {
     "test": "mocha --recursive",
     "test-ci": "mocha --recursive --reporter mocha-junit-reporter --check-leaks --bail",
@@ -11,15 +11,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/fieldnation/netsuite-soap.git"
+    "url": "git+ssh://git@bitbucket.org/fieldnation/netsuite-api.git"
   },
   "keywords": [
     "NetSuite",
-    "SOAP"
+    "API"
   ],
   "author": "Field Nation",
   "license": "UNLICENSED",
-  "homepage": "https://bitbucket.org/fieldnation/netsuite-soap#readme",
+  "homepage": "https://bitbucket.org/fieldnation/netsuite-api#readme",
   "dependencies": {
     "soap": "^0.17.0"
   },
