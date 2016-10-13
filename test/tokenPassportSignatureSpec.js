@@ -24,7 +24,7 @@ describe('TokenPassportSignature', () => {
     });
   });
 
-  context('#createSignature', () => {
+  context('#createAndSetSignature', () => {
     let key;
     let passport;
     beforeEach(() => {
@@ -35,13 +35,13 @@ describe('TokenPassportSignature', () => {
 
     it('should throw an error if the hashing algorithm is not supported', () => {
       sig.algorithm = undefined;
-      expect(sig.createSignature).to.throw(Error);
+      expect(sig.createAndSetSignature).to.throw(Error);
 
       try {
         const nonce = TokenPassport.getNonce();
         const timestamp = TokenPassport.getTimestamp();
         const baseString = passport.getBaseString(nonce, timestamp);
-        sig.createSignature(baseString, key, null);
+        sig.createAndSetSignature(baseString, key, null);
         (true).should.be.false; // always throw
       } catch (err) {
         err.message.should.contain('Hashing algorithm is not supported');
@@ -49,10 +49,10 @@ describe('TokenPassportSignature', () => {
     });
 
     it('should throw an error if the baseString is not provided', () => {
-      expect(sig.createSignature).to.throw(Error);
+      expect(sig.createAndSetSignature).to.throw(Error);
 
       try {
-        sig.createSignature(null, key);
+        sig.createAndSetSignature(null, key);
         (true).should.be.false; // always throw
       } catch (err) {
         err.message.should.contain('base string is required');
@@ -60,13 +60,13 @@ describe('TokenPassportSignature', () => {
     });
 
     it('should throw an error if the key is not provided', () => {
-      expect(sig.createSignature).to.throw(Error);
+      expect(sig.createAndSetSignature).to.throw(Error);
 
       try {
         const nonce = TokenPassport.getNonce();
         const timestamp = TokenPassport.getTimestamp();
         const baseString = passport.getBaseString(nonce, timestamp);
-        sig.createSignature(baseString, null);
+        sig.createAndSetSignature(baseString, null);
         (true).should.be.false; // always throw
       } catch (err) {
         err.message.should.contain('key is required');
@@ -77,8 +77,8 @@ describe('TokenPassportSignature', () => {
       const nonce = TokenPassport.getNonce();
       const timestamp = TokenPassport.getTimestamp();
       const baseString = passport.getBaseString(nonce, timestamp);
-      const signature = sig.createSignature(baseString, key);
-      const actual = signature[signature.length - 1];
+      sig.createAndSetSignature(baseString, key);
+      const actual = sig.value[sig.value.length - 1];
       actual.should.equal('=');
     });
 
@@ -87,7 +87,8 @@ describe('TokenPassportSignature', () => {
       const nonce = TokenPassport.getNonce();
       const timestamp = TokenPassport.getTimestamp();
       const baseString = passport.getBaseString(nonce, timestamp);
-      expect(sig.createSignature(baseString, key)).to.exist;
+      sig.createAndSetSignature(baseString, key)
+      expect(sig.value).to.exist;
     });
 
     it('should create a signature with SHA1', () => {
@@ -95,26 +96,27 @@ describe('TokenPassportSignature', () => {
       const timestamp = TokenPassport.getTimestamp();
       const baseString = passport.getBaseString(nonce, timestamp);
       sig.algorithm = 'SHA1';
-      expect(sig.createSignature(baseString, key)).to.exist;
+      sig.createAndSetSignature(baseString, key)
+      expect(sig.value).to.exist;
     });
 
     it('should return a known hash when the inputs are known', () => {
-      const nonce ='6obMKq0tmY8ylVOdEkA1';
-      const timestamp = 1439829974;
+      const nonce ='iYriqVvIoQfMQL5BpINa';
+      const timestamp = '1476381065';
 
-      const consumerSecret = '7278da58caf07f5c336301a601203d10a58e948efa280f0618e25fcee1ef2abd';
-      const tokenSecret = '060cd9ab3ffbbe1e3d3918e90165ffd37ab12acc76b4691046e2d29c7d7674c2';
+      const consumerSecret = 'd84d638605f12d0239502d2d4ea8f4adad0c1f42d6071a511c8f15bc42040a5f';
+      const tokenSecret = '6ebe22213a5f53202dbf0132f5ff94b212c7cc302b2c12c763595efa156454d1';
 
       const passport = new TokenPassport();
-      passport.account = '1234567';
-      passport.consumerKey = '71cc02b731f05895561ef0862d71553a3ac99498a947c3b7beaf4a1e4a29f7c4';
-      passport.token = '89e08d9767c5ac85b374415725567d05b54ecf0960ad2470894a52f741020d82';
+      passport.account = '3575242';
+      passport.consumerKey = '18eaaa5860828b345527fc2bb0b905825b4a116011f48aac2c81b09f183d89a0';
+      passport.token = '2cf707486c779d2e6610699fdd54d2a18214c881b1362d9152501b56e9f51cf9';
 
       const baseString = passport.getBaseString(nonce, timestamp);
       const key = TokenPassportSignature.createKey(consumerSecret, tokenSecret);
 
-      const signature = sig.createSignature(baseString, key)
-      signature.should.equal('FCghIZqXNetuZY8ILWOFH0ucdfzQOmAuL+q+kF21zPs=');
+      sig.createAndSetSignature(baseString, key);
+      sig.value.should.equal('aOI0YuX+T11wGPQjyOCQZ75QfMsvAvaXmNvT5terPM0=');
     });
   });
 });
