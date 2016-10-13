@@ -32,7 +32,7 @@ describe('TokenPassport', () => {
         const actual = TokenPassport.getTimestamp();
         expected.should.not.equal(actual);
         done();
-      }, 25);
+      }, 1000);
     });
   });
 
