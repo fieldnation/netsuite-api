@@ -1,13 +1,16 @@
 .DEFAULT_GOAL := build
 .PHONY: test lint
 
-tests: lint test cov
+build: 
+	npm install
 
-test:
+test-ci: test cov
+
+test: 
 	npm run test-ci
 
-lint:
+lint: 
 	npm run lint
 
-cov:
+cov: 
 	npm run test-cov
