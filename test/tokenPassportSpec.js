@@ -16,32 +16,13 @@ describe('TokenPassport', () => {
     it('should have a consumerKey', () => passport.should.have.property('consumerKey'));
     it('should have a token', () => passport.should.have.property('token'));
     it('should have a signature', () => passport.should.have.property('signature'));
-  });
-
-  context('#getTimestamp', () => {
-    it('should be a valid timestamp', () => {
-      const d = new Date(TokenPassport.getTimestamp()).getTime();
-      d.should.not.be.NaN;
-      d.should.be.above(0);
-    });
-
-    it('should generate a new timestamp every time it is invoked', done => {
-      const expected = TokenPassport.getTimestamp();
-
-      setTimeout(() => {
-        const actual = TokenPassport.getTimestamp();
-        expected.should.not.equal(actual);
-        done();
-      }, 1000);
-    });
+    it('should have a timestamp', () => passport.should.have.property('timestamp').and.should.be.a.Number);
+    it('should have a nonce', () => passport.should.have.property('nonce').and.should.be.a.String);
   });
 
   context('#nonce', () => {
-    let nonce;
-    beforeEach(() => nonce = TokenPassport.getNonce());
-
-    it('should be between 6 and 64 characters', () => nonce.length.should.be.least(6).and.most(64));
-    it('should not contain the word "undefined"', () => nonce.should.not.contain('undefined'));
+    it('should be between 6 and 64 characters', () => passport.nonce.length.should.be.least(6).and.most(64));
+    it('should not contain the word "undefined"', () => passport.nonce.should.not.contain('undefined'));
   });
 
   context('#getBaseString', () => {
@@ -50,10 +31,8 @@ describe('TokenPassport', () => {
       passport.account = '1234567';
       passport.consumerKey = 'eb72c61b011a80c870ba44cfc5fb5c13';
       passport.token = '4925397c4fde92c3ccefd398948e0758';
-      const nonce = TokenPassport.getNonce();
-      const timestamp = TokenPassport.getTimestamp();
-      const expected = `${passport.account}&${passport.consumerKey}&${passport.token}&${nonce}&${timestamp}`;
-      passport.getBaseString(nonce, timestamp).should.equal(expected);
+      const expected = `${passport.account}&${passport.consumerKey}&${passport.token}&${passport.nonce}&${passport.timestamp}`;
+      passport.getBaseString().should.equal(expected);
     });
   });
 
